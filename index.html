@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#081b18" />
+    <meta name="description" content="Draw Seven — a lively push-your-luck card game for one player versus three computer rivals." />
+    <title>Draw Seven</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,700;9..144,800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="noise" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <button class="brand" id="brandButton" aria-label="Draw Seven home">
+        <span class="brand-mark">7</span>
+        <span>DRAW SEVEN</span>
+      </button>
+      <div class="top-actions">
+        <button class="icon-button" id="rulesButton" aria-label="How to play">
+          <span>?</span><span class="button-label">How to play</span>
+        </button>
+        <button class="icon-button" id="soundButton" aria-label="Toggle sound" aria-pressed="true">
+          <span id="soundIcon">♪</span><span class="button-label">Sound</span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="welcome-screen" id="welcomeScreen">
+        <div class="hero-copy">
+          <p class="eyebrow">A PUSH-YOUR-LUCK CARD GAME</p>
+          <h1>Know when to<br /><em>hold the line.</em></h1>
+          <p class="hero-text">Draw unique numbers. Bank the points. Flip a duplicate and lose the lot. First to 200 takes the table.</p>
+          <form class="start-form" id="startForm">
+            <label for="playerName">Your name</label>
+            <div class="name-row">
+              <input id="playerName" name="playerName" maxlength="16" value="Player" autocomplete="nickname" />
+              <button class="primary-button" type="submit">Take a seat <span>→</span></button>
+            </div>
+          </form>
+          <div class="quick-facts" aria-label="Game facts">
+            <span><b>1</b> player</span>
+            <span><b>3</b> rivals</span>
+            <span><b>200</b> to win</span>
+          </div>
+        </div>
+
+        <div class="hero-art" aria-hidden="true">
+          <div class="sun-disc"></div>
+          <div class="hero-card card-eight"><small>DRAW</small><strong>8</strong><small>SEVEN</small></div>
+          <div class="hero-card card-five"><small>DRAW</small><strong>5</strong><small>SEVEN</small></div>
+          <div class="hero-card card-seven"><small>DRAW</small><strong>7</strong><small>SEVEN</small></div>
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+        </div>
+      </section>
+
+      <section class="game-screen hidden" id="gameScreen" aria-live="polite">
+        <div class="game-meta">
+          <div>
+            <span class="meta-label">ROUND</span>
+            <strong id="roundNumber">1</strong>
+          </div>
+          <div class="deck-status">
+            <span class="mini-deck" aria-hidden="true"></span>
+            <span><b id="deckCount">94</b> cards left</span>
+          </div>
+          <div>
+            <span class="meta-label">DEALER</span>
+            <strong id="dealerName">Mara</strong>
+          </div>
+        </div>
+
+        <div class="table" id="table">
+          <div class="player-grid" id="playerGrid"></div>
+          <div class="table-center">
+            <div class="draw-stack" id="drawStack" aria-hidden="true">
+              <div class="deck-shadow"></div>
+              <div class="card-back"><span>7</span><small>DRAW</small></div>
+            </div>
+            <p class="status-message" id="statusMessage">The table is ready.</p>
+          </div>
+        </div>
+
+        <div class="control-dock">
+          <div class="turn-score">
+            <span>ROUND VALUE</span>
+            <strong id="roundValue">0</strong>
+          </div>
+          <div class="decision-copy">
+            <strong id="decisionTitle">Waiting for your turn</strong>
+            <span id="decisionHint">Watch what the other players do.</span>
+          </div>
+          <div class="decision-buttons">
+            <button class="secondary-button" id="stayButton" disabled>Stay <span>Bank it</span></button>
+            <button class="primary-button danger" id="drawButton" disabled>Draw <span>Risk it →</span></button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="modal-backdrop hidden" id="rulesModal" role="dialog" aria-modal="true" aria-labelledby="rulesTitle">
+      <article class="modal rules-modal">
+        <button class="modal-close" data-close-modal aria-label="Close rules">×</button>
+        <p class="eyebrow">THE SHORT VERSION</p>
+        <h2 id="rulesTitle">How to play</h2>
+        <div class="rules-list">
+          <div><span>01</span><p><b>Draw or stay.</b> On your turn, take one card or bank your round value.</p></div>
+          <div><span>02</span><p><b>Avoid repeats.</b> Draw a number already in your row and you bust, scoring zero that round.</p></div>
+          <div><span>03</span><p><b>Find seven.</b> Collect seven different number cards to end the round and earn a 15-point bonus.</p></div>
+          <div><span>04</span><p><b>Race to 200.</b> Once anyone reaches 200 at the end of a round, the highest total wins.</p></div>
+        </div>
+        <div class="special-guide">
+          <h3>Special cards</h3>
+          <p><b>Second Chance</b> absorbs one duplicate. <b>Freeze</b> forces an active player to stay. <b>Flip Three</b> makes an active player take three cards. Score cards add +2, +4, +6, +8, +10, or double your number total.</p>
+        </div>
+        <button class="primary-button full" data-close-modal>Got it, let’s play</button>
+      </article>
+    </div>
+
+    <div class="modal-backdrop hidden" id="targetModal" role="dialog" aria-modal="true" aria-labelledby="targetTitle">
+      <article class="modal target-modal">
+        <p class="eyebrow">ACTION CARD</p>
+        <h2 id="targetTitle">Choose a player</h2>
+        <p id="targetCopy">Who should receive this card?</p>
+        <div class="target-options" id="targetOptions"></div>
+      </article>
+    </div>
+
+    <div class="modal-backdrop hidden" id="roundModal" role="dialog" aria-modal="true" aria-labelledby="roundTitle">
+      <article class="modal results-modal">
+        <p class="eyebrow" id="roundEyebrow">ROUND COMPLETE</p>
+        <h2 id="roundTitle">Points on the board</h2>
+        <div class="result-list" id="resultList"></div>
+        <button class="primary-button full" id="nextRoundButton">Deal the next round <span>→</span></button>
+      </article>
+    </div>
+
+    <div class="toast" id="toast" role="status"></div>
+    <script src="game.js"></script>
+  </body>
+</html>
